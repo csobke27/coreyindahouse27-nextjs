@@ -1,0 +1,7 @@
+.headerNavbar {
+  background-color: var(--color-default-theme);
+}
+
+.navbarCollapseFix {
+  visibility: visible;
+}

@@ -1,4 +1,5 @@
 import './globals.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
@@ -8,14 +9,17 @@ import {toPlainText} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
 import {Toaster} from 'sonner'
 
+// import BootstrapClient from './components/BootstrapClient'
 import DraftModeToast from '@/app/components/DraftModeToast'
-import Footer from '@/app/components/Footer'
-import Header from '@/app/components/Header'
+import Footer from '@/app/components/Footer/Footer'
+import Header from '@/app/components/Header/Header'
 import * as demo from '@/sanity/lib/demo'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from '@/app/client-utils'
+
+// import 'bootstrap/dist/css/bootstrap.min.css'
 
 /**
  * Generate metadata for the page.
@@ -69,9 +73,11 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} bg-white text-black`}>
-      <body>
-        <section className="min-h-screen pt-24">
+    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} bg-white text-black`} suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        {/* <section className="min-h-screen pt-24"> */}
+        <section>
+          {/* <BootstrapClient /> */}
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />
           {isDraftMode && (
