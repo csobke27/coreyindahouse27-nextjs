@@ -21,6 +21,9 @@ type HeaderClientProps = {
 export default function HeaderClient({siteTitle, navigation}: HeaderClientProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev)
+  }
 
   return (
     <div className={`py-5 flex flex-col ${styles.headerNavbar} px-4 mx-auto text-slate-200`}>
@@ -55,8 +58,8 @@ export default function HeaderClient({siteTitle, navigation}: HeaderClientProps)
 
         <button
           type="button"
-          onClick={() => {setIsMenuOpen((prev) => !prev);}}
-          className="md:hidden flex items-center"
+          onClick={toggleMenu}
+          className="md:hidden flex items-center relative z-20 touch-manipulation"
           aria-label="Toggle mobile menu"
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
@@ -74,15 +77,23 @@ export default function HeaderClient({siteTitle, navigation}: HeaderClientProps)
         </button>
       </nav>
 
-      {isMenuOpen && (
-        <div
-          id="mobile-menu"
-          className="mobile-menu w-full md:hidden flex flex-col items-center space-y-2 px-4 pt-3 pb-3 text-md"
-        >
+      <div
+        id="mobile-menu"
+        className={`mobile-menu w-full md:hidden overflow-hidden transition-[max-height,opacity,padding] duration-300 ease-in-out ${
+          isMenuOpen
+            ? 'max-h-[70vh] opacity-100 px-4 pt-3 pb-3 pointer-events-auto'
+            : 'max-h-0 opacity-0 px-4 pt-0 pb-0 pointer-events-none'
+        }`}
+        aria-hidden={!isMenuOpen}
+      >
+        <div className="flex flex-col items-center space-y-2 text-md">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
+              onClick={() => {
+                setIsMenuOpen(false)
+              }}
               className={`block w-full text-center font-medium text-md py-2 rounded-sm hover:text-white transition-colors duration-200 ${
                 pathname === item.href ? 'text-white bg-purple-600' : 'text-black'
               }`}
@@ -91,7 +102,7 @@ export default function HeaderClient({siteTitle, navigation}: HeaderClientProps)
             </Link>
           ))}
         </div>
-      )}
+      </div>
     </div>
   )
 }
