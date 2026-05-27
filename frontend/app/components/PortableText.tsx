@@ -94,10 +94,21 @@ export default function CustomPortableText({
         )
       },
     },
+    list: {
+      bullet: ({children}) => <ul className="my-2 list-disc pl-6">{children}</ul>,
+      number: ({children}) => <ol className="my-2 list-decimal pl-6">{children}</ol>,
+    },
+    listItem: {
+      bullet: ({children}) => <li className="my-1">{children}</li>,
+      number: ({children}) => <li className="my-1">{children}</li>,
+    },
     marks: {
       link: ({children, value: link}) => {
         return <ResolvedLink link={link}>{children}</ResolvedLink>
       },
+      textColor: ({children, value}) => (
+        <span style={{color: value?.hex}}>{children}</span>
+      ),
     },
   }
 

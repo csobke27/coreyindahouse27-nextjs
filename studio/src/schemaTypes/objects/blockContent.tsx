@@ -1,4 +1,5 @@
 import {defineArrayMember, defineType, defineField} from 'sanity'
+import {set, PatchEvent} from 'sanity'
 import type {Link} from '../../../sanity.types'
 
 /**
@@ -90,6 +91,53 @@ export const blockContent = defineType({
                 title: 'Open in new tab',
                 type: 'boolean',
                 initialValue: false,
+              }),
+            ],
+          },
+          {
+            name: 'textColor',
+            type: 'object',
+            title: 'Text Color',
+            fields: [
+              defineField({
+                name: 'hex',
+                title: 'Color',
+                type: 'string',
+                initialValue: '#ffffff',
+                components: {
+                  input: (props) => {
+                    const presetColors = [
+                      {title: 'White', value: '#ffffff'},
+                      {title: 'Orange', value: '#ff6900'},
+                      {title: 'Green', value: '#00d084'}
+                    ]
+
+                    const selectedColor = typeof props.value === 'string' ? props.value : '#ffffff'
+
+                    return (
+                      <div style={{display: 'grid', gap: 8}}>
+                        <select
+                          value={selectedColor}
+                          onChange={(e) => props.onChange?.(PatchEvent.from(set(e.target.value)))}
+                          style={{width: '100%', padding: '8px 10px'}}
+                        >
+                          {presetColors.map((color) => (
+                            <option key={color.value} value={color.value}>
+                              {color.title}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="color"
+                          value={selectedColor}
+                          onChange={(e) => props.onChange?.(PatchEvent.from(set(e.target.value)))}
+                          style={{width: '100%', height: 40, cursor: 'pointer', border: 'none', padding: 0, background: 'none'}}
+                        />
+                        <p style={{marginTop: 4, fontSize: 12, color: '#888'}}>{props.value ?? 'No color selected'}</p>
+                      </div>
+                    )
+                  },
+                },
               }),
             ],
           },

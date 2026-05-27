@@ -15,6 +15,55 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: ../sanity.schema.json
+export type DbdCharacterReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'dbdCharacter'
+}
+
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
+export type DbdPerk = {
+  _id: string
+  _type: 'dbdPerk'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  perkName: string
+  description: BlockContent
+  type: 'survivor' | 'killer'
+  character?: DbdCharacterReference
+  perkImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
 export type PageReference = {
   _ref: string
   _type: 'reference'
@@ -29,6 +78,63 @@ export type PostReference = {
   [internalGroqTypeReferenceTo]?: 'post'
 }
 
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+      listItem?: 'bullet' | 'number'
+      markDefs?: Array<
+        | {
+            linkType?: 'href' | 'page' | 'post'
+            href?: string
+            page?: PageReference
+            post?: PostReference
+            openInNewTab?: boolean
+            _type: 'link'
+            _key: string
+          }
+        | {
+            hex?: string
+            _type: 'textColor'
+            _key: string
+          }
+      >
+      level?: number
+      _type: 'block'
+      _key: string
+    }
+  | {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+      _key: string
+    }
+>
+
+export type DbdCharacter = {
+  _id: string
+  _type: 'dbdCharacter'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name: string
+  type: 'survivor' | 'killer'
+  image?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
+
 export type Link = {
   _type: 'link'
   linkType?: 'href' | 'page' | 'post'
@@ -36,13 +142,6 @@ export type Link = {
   page?: PageReference
   post?: PostReference
   openInNewTab?: boolean
-}
-
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type CallToAction = {
@@ -88,39 +187,6 @@ export type BlockContentTextOnly = Array<{
   _key: string
 }>
 
-export type BlockContent = Array<
-  | {
-      children?: Array<{
-        marks?: Array<string>
-        text?: string
-        _type: 'span'
-        _key: string
-      }>
-      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-      listItem?: 'bullet' | 'number'
-      markDefs?: Array<{
-        linkType?: 'href' | 'page' | 'post'
-        href?: string
-        page?: PageReference
-        post?: PostReference
-        openInNewTab?: boolean
-        _type: 'link'
-        _key: string
-      }>
-      level?: number
-      _type: 'block'
-      _key: string
-    }
-  | {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
-      _key: string
-    }
->
-
 export type Button = {
   _type: 'button'
   buttonText?: string
@@ -165,22 +231,6 @@ export type Settings = {
     metadataBase?: string
     _type: 'image'
   }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
 }
 
 export type Page = {
@@ -491,18 +541,21 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | DbdCharacterReference
+  | SanityImageAssetReference
+  | DbdPerk
+  | SanityImageCrop
+  | SanityImageHotspot
   | PageReference
   | PostReference
+  | BlockContent
+  | DbdCharacter
   | Link
-  | SanityImageAssetReference
   | CallToAction
   | InfoSection
   | BlockContentTextOnly
-  | BlockContent
   | Button
   | Settings
-  | SanityImageCrop
-  | SanityImageHotspot
   | Page
   | PersonReference
   | Post
@@ -627,15 +680,22 @@ export type GetPageQueryResult = {
               }>
               style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
               listItem?: 'bullet' | 'number'
-              markDefs: Array<{
-                linkType?: 'href' | 'page' | 'post'
-                href?: string
-                page: string | null
-                post: string | null
-                openInNewTab?: boolean
-                _type: 'link'
-                _key: string
-              }> | null
+              markDefs: Array<
+                | {
+                    linkType?: 'href' | 'page' | 'post'
+                    href?: string
+                    page: string | null
+                    post: string | null
+                    openInNewTab?: boolean
+                    _type: 'link'
+                    _key: string
+                  }
+                | {
+                    hex?: string
+                    _type: 'textColor'
+                    _key: string
+                  }
+              > | null
               level?: number
               _type: 'block'
               _key: string
@@ -748,15 +808,22 @@ export type PostQueryResult = {
         }>
         style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
         listItem?: 'bullet' | 'number'
-        markDefs: Array<{
-          linkType?: 'href' | 'page' | 'post'
-          href?: string
-          page: string | null
-          post: string | null
-          openInNewTab?: boolean
-          _type: 'link'
-          _key: string
-        }> | null
+        markDefs: Array<
+          | {
+              linkType?: 'href' | 'page' | 'post'
+              href?: string
+              page: string | null
+              post: string | null
+              openInNewTab?: boolean
+              _type: 'link'
+              _key: string
+            }
+          | {
+              hex?: string
+              _type: 'textColor'
+              _key: string
+            }
+        > | null
         level?: number
         _type: 'block'
         _key: string
