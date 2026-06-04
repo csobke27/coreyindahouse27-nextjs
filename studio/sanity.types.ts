@@ -193,6 +193,33 @@ export type Button = {
   link?: Link
 }
 
+export type CarouselSlide = {
+  _id: string
+  _type: 'carouselSlide'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  image: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string
+    _type: 'image'
+  }
+  mobileImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string
+    _type: 'image'
+  }
+  order: number
+  isActive?: boolean
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -555,6 +582,7 @@ export type AllSanitySchemaTypes =
   | InfoSection
   | BlockContentTextOnly
   | Button
+  | CarouselSlide
   | Settings
   | Page
   | PersonReference

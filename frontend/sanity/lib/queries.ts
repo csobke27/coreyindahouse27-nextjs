@@ -2,6 +2,24 @@ import {defineQuery} from 'next-sanity'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
+export const carouselSlidesQuery = defineQuery(`
+  *[_type == "carouselSlide" && coalesce(isActive, true)]
+  | order(order asc, _createdAt asc) {
+    _id,
+    title,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt,
+    "mobileImageUrl": mobileImage.asset->url,
+    "mobileImageAlt": mobileImage.alt,
+    body,
+    "url": {
+      "current": url.current.current,
+      "buttonText": url.buttonText
+    },
+    order
+  }
+`)
+
 const postFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),

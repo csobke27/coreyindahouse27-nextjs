@@ -193,6 +193,33 @@ export type Button = {
   link?: Link
 }
 
+export type CarouselSlide = {
+  _id: string
+  _type: 'carouselSlide'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  image: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string
+    _type: 'image'
+  }
+  mobileImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string
+    _type: 'image'
+  }
+  order: number
+  isActive?: boolean
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -555,6 +582,7 @@ export type AllSanitySchemaTypes =
   | InfoSection
   | BlockContentTextOnly
   | Button
+  | CarouselSlide
   | Settings
   | Page
   | PersonReference
@@ -625,6 +653,19 @@ export type SettingsQueryResult = {
     _type: 'image'
   }
 } | null
+
+// Source: sanity/lib/queries.ts
+// Variable: carouselSlidesQuery
+// Query: *[_type == "carouselSlide" && coalesce(isActive, true)]  | order(order asc, _createdAt asc) {    _id,    title,    "imageUrl": image.asset->url,    "imageAlt": image.alt,    "mobileImageUrl": mobileImage.asset->url,    "mobileImageAlt": mobileImage.alt,    order  }
+export type CarouselSlidesQueryResult = Array<{
+  _id: string
+  title: string
+  imageUrl: string | null
+  imageAlt: string
+  mobileImageUrl: string | null
+  mobileImageAlt: string
+  order: number
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: getPageQuery
@@ -885,6 +926,7 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
+    '\n  *[_type == "carouselSlide" && coalesce(isActive, true)]\n  | order(order asc, _createdAt asc) {\n    _id,\n    title,\n    "imageUrl": image.asset->url,\n    "imageAlt": image.alt,\n    "mobileImageUrl": mobileImage.asset->url,\n    "mobileImageAlt": mobileImage.alt,\n    order\n  }\n': CarouselSlidesQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllPostsQueryResult

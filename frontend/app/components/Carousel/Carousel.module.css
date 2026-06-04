@@ -1,0 +1,72 @@
+.carouselRoot {
+  position: relative;
+  width: 100%;
+}
+
+.toggleButton {
+  margin-bottom: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+
+.toggleButton:hover {
+  background: #f9fafb;
+}
+
+.mySwiper {
+  width: 100%;
+  /* min-height: 500px; */
+}
+
+.mySwiper :global(.swiper-slide) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111;
+  background: linear-gradient(145deg, #ffffff 0%, #f3f4f6 100%);
+  /* border: 1px solid #e5e7eb; */
+  /* border-radius: 12px; */
+  /* min-height: 500px; */
+}
+
+.autoplayProgress {
+  --progress: 1;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1652f9;
+}
+
+.autoplayProgress svg {
+  --size: 100%;
+  position: absolute;
+  inset: 0;
+  width: var(--size);
+  height: var(--size);
+  transform: rotate(-90deg);
+  stroke-width: 4px;
+  stroke: #1652f9;
+  fill: none;
+}
+
+.autoplayProgress svg circle {
+  stroke-dasharray: 126;
+  stroke-dashoffset: calc(126 * var(--progress));
+  transition: stroke-dashoffset 0.15s linear;
+}
