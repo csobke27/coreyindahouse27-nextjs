@@ -216,8 +216,28 @@ export type CarouselSlide = {
     alt: string
     _type: 'image'
   }
+  body?: BlockContent
+  url?: {
+    current?: Slug
+    buttonText?: string
+  }
   order: number
   isActive?: boolean
+}
+
+export type Slug = {
+  _type: 'slug'
+  current: string
+  source?: string
+}
+
+export type Category = {
+  _id: string
+  _type: 'category'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  CategoryName: string
 }
 
 export type Settings = {
@@ -287,6 +307,13 @@ export type PersonReference = {
   [internalGroqTypeReferenceTo]?: 'person'
 }
 
+export type CategoryReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'category'
+}
+
 export type Post = {
   _id: string
   _type: 'post'
@@ -307,6 +334,11 @@ export type Post = {
   }
   date?: string
   author?: PersonReference
+  categories?: Array<
+    {
+      _key: string
+    } & CategoryReference
+  >
 }
 
 export type Person = {
@@ -325,12 +357,6 @@ export type Person = {
     alt?: string
     _type: 'image'
   }
-}
-
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
 }
 
 export type SanityAssistInstructionTask = {
@@ -583,12 +609,14 @@ export type AllSanitySchemaTypes =
   | BlockContentTextOnly
   | Button
   | CarouselSlide
+  | Slug
+  | Category
   | Settings
   | Page
   | PersonReference
+  | CategoryReference
   | Post
   | Person
-  | Slug
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations

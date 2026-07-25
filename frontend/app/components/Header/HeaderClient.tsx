@@ -26,7 +26,7 @@ export default function HeaderClient({siteTitle, navigation}: HeaderClientProps)
   }
 
   return (
-    <div className={`py-5 flex flex-col ${styles.headerNavbar} px-4 mx-auto text-slate-200`}>
+    <div className={`py-5 flex flex-col w-full ${styles.headerNavbar} px-4 text-slate-200`}>
       <nav className="w-full flex items-center justify-between">
         <Link
           href="/"

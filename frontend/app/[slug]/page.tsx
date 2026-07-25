@@ -51,7 +51,8 @@ export default async function Page(props: Props) {
   if (!page?._id) {
     return (
       <div className="py-40">
-        <PageOnboarding />
+        <div className="text-center text-xl text-gray-500">Page unavailable</div>
+        {/* <PageOnboarding /> */}
       </div>
     )
   }

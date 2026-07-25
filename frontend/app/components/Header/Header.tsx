@@ -7,7 +7,7 @@ const navigation = [
   { name: 'About', href: '/about', current: false },
   { name: 'Blog', href: '/blog', current: false },
   { name: 'Content', href: '/content', current: false },
-  { name: 'Merch', href: '/merch', current: false },
+  // { name: 'Merch', href: '/merch', current: false },
   { name: 'Game Extensions', href: '/game-extensions', current: false },
 ]
 
