@@ -46,7 +46,6 @@
 }
 
 .full-height {
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: calc(100vh - var(--layout-header-height, 0px) - var(--layout-footer-height, 0px));
+  min-height: calc(100dvh - var(--layout-header-height, 0px) - var(--layout-footer-height, 0px));
 }
-
