@@ -11,6 +11,7 @@ type MainContentProps = {
 
 export default function MainContent({youtubeSubscribers, videoId, videoTitle}: MainContentProps) {
     const [activeSlide, setActiveSlide] = useState<number | null>(null);
+    const twitchParent = typeof window === 'undefined' ? 'localhost' : window.location.hostname;
 
     function handleSlideClick(index:number) {
         setActiveSlide(index === activeSlide ? null : index);
@@ -44,7 +45,7 @@ export default function MainContent({youtubeSubscribers, videoId, videoTitle}: M
                 position="top"
             >
                 <p className="name text-white">Follow my Twitch channel for live gaming, jumpscares, and humorous content!</p>
-                <iframe className="my-4 px-4 rounded-lg block mx-auto aspect-video max-w-[85%]" src={`https://player.twitch.tv/?channel=coreyindahouse27&parent=localhost`} title="Twitch stream player" allowFullScreen></iframe>
+                    <iframe className="my-4 px-4 rounded-lg block mx-auto aspect-video max-w-[85%]" src={`https://player.twitch.tv/?channel=coreyindahouse27&parent=${encodeURIComponent(twitchParent)}`} title="Twitch stream player" allowFullScreen></iframe>
                 <a href="https://twitch.tv/CoreyInDaHouse27" target="_blank" className="mb-4 px-4 py-2 bg-[#007bff] text-white rounded-lg hover:bg-[#007bff]/90 transition-colors duration-300 inline-block">
                   Visit Twitch Channel
                 </a>

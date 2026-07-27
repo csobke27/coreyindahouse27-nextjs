@@ -13,4 +13,8 @@ export const {sanityFetch, SanityLive} = defineLive({
   serverToken: token,
   // Required for stand-alone live previews, the token is only shared to the browser if it's a valid Next.js Draft Mode session
   browserToken: token,
+  // Prevent stale production pages when live tag revalidation is unavailable.
+  fetchOptions: {
+    revalidate: 60,
+  },
 })

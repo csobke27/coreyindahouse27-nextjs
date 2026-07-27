@@ -13,6 +13,8 @@ import {dbdCharacters} from './documents/dbdCharacters'
 import {dbdPerks} from './documents/dbdPerks'
 import {carouselSlide} from './documents/carouselSlide'
 import {category} from './documents/category'
+import {gameExtensionGames} from './documents/gameExtensionGames'
+import { gameExtensions } from './documents/gameExtensions'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/studio/schema-types
 
@@ -34,5 +36,7 @@ export const schemaTypes = [
   link,
   // DBD Characters
   dbdCharacters,
-  dbdPerks
+  dbdPerks,
+  gameExtensionGames,
+  gameExtensions
 ]

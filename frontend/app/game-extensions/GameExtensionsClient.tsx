@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperInstance } from 'swiper'
 import 'swiper/css';
@@ -26,27 +26,12 @@ type Game = {
     }[]
 }
 
-export default function GameExtensionsClient() {
+export default function GameExtensionsClient({ gameList }: { gameList: Game[] }) {
 
-const [games, setGames] = useState<Game[]>([])
+    const games = gameList ?? []
 
-    const [selectedGame, setSelectedGame] = useState<Game | null>(null)
-
-    useEffect(() => {
-        async function fetchGames() {
-            try {
-                const response = await fetch('/api/gameList')
-                const data = await response.json()
-                setGames(data)
-                if(data.length > 0) {
-                    setSelectedGame(data[0])
-                }
-            } catch (error) {
-                console.error('Error fetching games:', error)
-            }
-        }
-        fetchGames()
-    }, [])
+    const [selectedGame, setSelectedGame] = useState<Game | null>(() => games[0] ?? null)
+    const [isSwiperReady, setIsSwiperReady] = useState(false)
 
     function handleSlideChange(swiper: SwiperInstance) {
         setSelectedGame(games[swiper.activeIndex])
@@ -57,7 +42,14 @@ const [games, setGames] = useState<Game[]>([])
             <div className="max-w-7xl mx-auto px-4 text-center">
                 <h1 className="text-4xl font-bold ">Game Extensions</h1>
                 <p className="mt-4 text-md">Explore the various game extensions I offer to enhance your gaming experience.</p>
-                <div className="my-8">
+                <div className="my-8 relative">
+                    {!isSwiperReady && (
+                        <div className="h-[430px] flex items-center justify-center rounded-lg border border-gray-300 bg-white/70">
+                            <div className="text-sm font-medium text-gray-700">
+                                Loading game carousel...
+                            </div>
+                        </div>
+                    )}
                     <Swiper
                         effect={"coverflow"}
                         grabCursor={true}
@@ -72,7 +64,11 @@ const [games, setGames] = useState<Game[]>([])
                         }}
                         pagination={true}
                         modules={[EffectCoverflow, Pagination]}
-                        className={styles.mySwiper}
+                        className={`${styles.mySwiper} ${isSwiperReady ? 'opacity-100' : 'opacity-0 absolute inset-0 pointer-events-none'} transition-opacity duration-200`}
+                        onSwiper={(swiper) => {
+                            setIsSwiperReady(true)
+                            setSelectedGame(games[swiper.activeIndex] ?? games[0] ?? null)
+                        }}
                         onSlideChange={(slide) => handleSlideChange(slide)}
                     >
                         {games.map((game: Game) => (
@@ -90,7 +86,7 @@ const [games, setGames] = useState<Game[]>([])
                     </Swiper>
                 </div>
 
-                <div className="my-4">
+                <div className={`${isSwiperReady ? 'block' : 'hidden'} my-4`}>
                     {selectedGame && selectedGame.extensions.length > 0 ? (
                         <ul className="space-y-2 border-4 border-gray-300 rounded-lg">
                             {selectedGame.extensions.map((extension, index) => (

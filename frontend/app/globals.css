@@ -45,3 +45,8 @@
   --default-transition-duration: 250ms;
 }
 
+.full-height {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+

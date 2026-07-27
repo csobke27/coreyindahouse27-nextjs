@@ -3,8 +3,8 @@ import { route } from 'sanity/router'
 
 export async function GET() {
   const games = [
-    {id: 1, name: 'Fortnite', coverUrl: '/images/game-covers/fortnite.jpg', extensions: []},
-    {id: 2, name: 'Dead By Daylight', coverUrl: '/images/game-covers/dead by daylight.jpg', extensions: [
+    {id: 2, name: 'Fortnite', coverUrl: '/images/game-covers/fortnite.jpg', extensions: []},
+    {id: 3, name: 'Dead By Daylight', coverUrl: '/images/game-covers/dead by daylight.jpg', extensions: [
         {
             title: 'Alphabet Challenge',
             description: 'Type in a four-letter word and receive a perk that starts with each letter.',
@@ -18,7 +18,7 @@ export async function GET() {
             route: '/game-extensions/chaos-shuffle'
         }
     ]},
-    {id: 3, name: 'Phasmophobia', coverUrl: '/images/game-covers/phasmophobia.png', extensions: []},
+    {id: 4, name: 'Phasmophobia', coverUrl: '/images/game-covers/phasmophobia.png', extensions: []},
   ]
 
   return NextResponse.json(games)

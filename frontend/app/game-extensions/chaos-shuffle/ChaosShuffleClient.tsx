@@ -2,7 +2,7 @@
 
 import { CharacterForm } from "./CharacterForm";
 import { ShuffleResult } from "./ShuffleResult";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { PortableTextBlock } from 'next-sanity'
 
@@ -77,6 +77,22 @@ export default function ChaosShuffleClient({ survivorList, survivorPerks, killer
     const [killerPlayers, setKillerPlayers] = useState<KillerPlayer[]>([]);
 
     const [isProcessing, setIsProcessing] = useState(false);
+
+    useEffect(() => {
+        const updateLayoutHeights = () => {
+            const headerHeight = document.querySelector('header')?.getBoundingClientRect().height ?? 0;
+            const footerHeight = document.querySelector('footer')?.getBoundingClientRect().height ?? 0;
+            document.documentElement.style.setProperty('--layout-header-height', `${headerHeight}px`);
+            document.documentElement.style.setProperty('--layout-footer-height', `${footerHeight}px`);
+        };
+
+        updateLayoutHeights();
+        window.addEventListener('resize', updateLayoutHeights);
+
+        return () => {
+            window.removeEventListener('resize', updateLayoutHeights);
+        };
+    }, []);
     
     function handleAddPlayer(playerType: "survivor" | "killer") {
         // Logic to add a player to the shuffle configuration
@@ -307,7 +323,7 @@ export default function ChaosShuffleClient({ survivorList, survivorPerks, killer
 
     return (
         <div className="bg-[url('/images/dbd-forest-background.jpg')] bg-fixed">
-            <div className="py-12">
+            <div className="py-12 full-height">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <h1 className="text-4xl font-bold text-white">Chaos Shuffle</h1>
                 </div>
