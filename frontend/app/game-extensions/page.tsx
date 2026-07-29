@@ -31,12 +31,12 @@ const GAME_QUERY = `*[_type == "gameExtensionGames" && isActive == true] | order
         }
     }`
 
-const options = { next: { revalidate: 60 * 60 } };
+const options = { next: { revalidate: 60 * 10 } };
 
 const getGameList = unstable_cache(
     async () => client.fetch<GameExtensionGame[]>(GAME_QUERY, {}, options),
     ["game-extension-game-list"],
-    { revalidate: 60 * 60 }
+    { revalidate: 60 * 10 }
 );
 
 export default async function GameExtensionsPage() {

@@ -48,30 +48,30 @@ const KILLER_PERK_QUERY = `*[_type == "dbdPerk" && type == "killer"]{
         perkImage
     }`
 
-const options = { next: { revalidate: 60 * 60 } };
+const options = { next: { revalidate: 60 * 10 } };
 
 const getSurvivorList = unstable_cache(
     async () => client.fetch<DbdCharacter[]>(SURVIVOR_QUERY, {}, options),
     ["chaos-shuffle-survivor-list"],
-    { revalidate: 60 * 60 }
+    { revalidate: 60 * 10 }
 );
 
 const getSurvivorPerks = unstable_cache(
     async () => client.fetch<DbdPerk[]>(SURVIVOR_PERK_QUERY, {}, options),
     ["chaos-shuffle-survivor-perks"],
-    { revalidate: 60 * 60 }
+    { revalidate: 60 * 10 }
 );
 
 const getKillerList = unstable_cache(
     async () => client.fetch<DbdCharacter[]>(KILLER_QUERY, {}, options),
     ["chaos-shuffle-killer-list"],
-    { revalidate: 60 * 60 }
+    { revalidate: 60 * 10 }
 );
 
 const getKillerPerks = unstable_cache(
     async () => client.fetch<DbdPerk[]>(KILLER_PERK_QUERY, {}, options),
     ["chaos-shuffle-killer-perks"],
-    { revalidate: 60 * 60 }
+    { revalidate: 60 * 10 }
 );
 
 export default async function ChaosShufflePage() {
