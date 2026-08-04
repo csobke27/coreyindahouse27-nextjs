@@ -6,11 +6,6 @@ import CustomPortableText from '@/app/components/PortableText'
 import type { PortableTextBlock } from 'next-sanity'
 // import { set } from "date-fns";
 
-interface ShuffleResultProps {
-    playerName: string;
-    perks: DbdPerk[];
-}
-
 type SanityImageValue = {
     asset?: {
         _ref?: string;
@@ -41,12 +36,12 @@ type DbdPerk = {
 }
 
 interface ShuffleResultProps {
-    playerName: string;
+    playerName?: string;
     perks: DbdPerk[];
     visible: boolean;
 }
 
-export function ShuffleResult({ playerName, perks, visible }: ShuffleResultProps) {
+export function ShuffleResult({ perks, visible, playerName = '' }: ShuffleResultProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [selectedPerk, setSelectedPerk] = useState<DbdPerk | null>(null);
 
@@ -54,11 +49,9 @@ export function ShuffleResult({ playerName, perks, visible }: ShuffleResultProps
     const displayPerkDetails = (perk: DbdPerk) => {
         if(selectedPerk?._id === perk._id) {
             setIsMenuOpen((prev) => !prev)
-            console.log("Closing menu");
         } else {
             setSelectedPerk(perk);
             setIsMenuOpen(true);
-            console.log("Opening menu for perk:", perk);
         }
     }
 
@@ -122,12 +115,13 @@ export function ShuffleResult({ playerName, perks, visible }: ShuffleResultProps
                     : {opacity: 0}
             }
         >
-            <h1 className="text-2xl font-bold mb-2 text-white">{playerName}&apos;s Perks:</h1>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+            {playerName && <h1 className="text-2xl font-bold mb-2 text-white">{playerName}&apos;s Perks:</h1>}
+            {/* <h1 className="text-2xl font-bold mb-2 text-white">{playerName}&apos;s Perks:</h1> */}
+            <div className={`grid ${perks.length >= 2 ? 'grid-cols-2' : ''} md:grid-cols-${perks.length} gap-4 mb-5 place-items-center`}>
                 {perks.map((perk) => (
-                    <div onClick={() => displayPerkDetails(perk)} key={perk._id} className={`aspect-1/1 p-4 rounded-lg object-cover items-center ${selectedPerk?._id === perk._id && isMenuOpen ? 'border-4 border-blue-500' : 'border-2 border-[rgba(255,255,255,0.2)]'} cursor-pointer bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] transition-colors`}>
+                    <div onClick={() => displayPerkDetails(perk)} key={perk._id} className={`max-w-[240px] aspect-1/1 p-4 rounded-lg object-cover items-center ${selectedPerk?._id === perk._id && isMenuOpen ? 'border-4 border-blue-500' : 'border-2 border-[rgba(255,255,255,0.2)]'} cursor-pointer bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] transition-colors`}>
                         {renderPerkImage(perk)}
-                        <h2 className="text-lg font-bold text-white">{perk.perkName}</h2>
+                        <h2 className="text-[clamp(0.85rem,1.8vw,1.125rem)] font-bold text-white">{perk.perkName}</h2>
                     </div>
                 ))}
             </div>

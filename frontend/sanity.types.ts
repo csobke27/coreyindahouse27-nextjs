@@ -15,53 +15,25 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: ../sanity.schema.json
-export type DbdCharacterReference = {
+export type GameExtensionGamesReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'dbdCharacter'
+  [internalGroqTypeReferenceTo]?: 'gameExtensionGames'
 }
 
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-}
-
-export type DbdPerk = {
+export type GameExtension = {
   _id: string
-  _type: 'dbdPerk'
+  _type: 'gameExtension'
   _createdAt: string
   _updatedAt: string
   _rev: string
-  perkName: string
+  title: string
+  game: GameExtensionGamesReference
   description: BlockContent
-  type: 'survivor' | 'killer'
-  character?: DbdCharacterReference
-  perkImage: {
-    asset?: SanityImageAssetReference
-    media?: unknown
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    _type: 'image'
-  }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
+  note?: string
+  route: string
+  isActive?: boolean
 }
 
 export type PageReference = {
@@ -76,6 +48,13 @@ export type PostReference = {
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'post'
+}
+
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type BlockContent = Array<
@@ -117,6 +96,66 @@ export type BlockContent = Array<
       _key: string
     }
 >
+
+export type GameExtensionGames = {
+  _id: string
+  _type: 'gameExtensionGames'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  gameName: string
+  gameCoverImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  order: number
+  isActive?: boolean
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
+export type DbdCharacterReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'dbdCharacter'
+}
+
+export type DbdPerk = {
+  _id: string
+  _type: 'dbdPerk'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  perkName: string
+  description: BlockContent
+  type: 'survivor' | 'killer'
+  character?: DbdCharacterReference
+  perkImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
 
 export type DbdCharacter = {
   _id: string
@@ -594,14 +633,17 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
-  | DbdCharacterReference
-  | SanityImageAssetReference
-  | DbdPerk
-  | SanityImageCrop
-  | SanityImageHotspot
+  | GameExtensionGamesReference
+  | GameExtension
   | PageReference
   | PostReference
+  | SanityImageAssetReference
   | BlockContent
+  | GameExtensionGames
+  | SanityImageCrop
+  | SanityImageHotspot
+  | DbdCharacterReference
+  | DbdPerk
   | DbdCharacter
   | Link
   | CallToAction
